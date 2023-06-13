@@ -48,6 +48,29 @@ app.delete("/api/contacts/:id", (req, res) => {
   }
 });
 
+app.post("/api/contacts", (req, res) => {
+  const { name, email } = req.body;
+  // Check if name and email are provided
+  if (!name || !email) {
+    return res
+      .status(400)
+      .json({ error: "Name and email are required fields" });
+  }
+  // Check if email already exists in contacts
+  const existingContact = contacts.find((contact) => contact.email === email);
+  if (existingContact) {
+    return res.status(409).json({ error: "Email address already exists" });
+  }
+  // Generate unique ID for the new contact
+  const id = `${Math.random().toString(36).substr(2, 9)}${Date.now()}`;
+  // Create the new contact object
+  const newContact = { id, name, email };
+  // Add the new contact to the contacts list
+  contacts.push(newContact);
+  // Send success response with the newly created contact
+  res.status(201).json(newContact);
+});
+
 // Start the server
 const PORT = 3001;
 app.listen(PORT, () => {
