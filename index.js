@@ -1,6 +1,15 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+// Custom Middleware
+const requestLogger = (req, res, next) => {
+  console.log(`Request Method: ${req.method}`);
+  console.log(`Request Path: ${req.path}`);
+  Object.keys(req.body).length !== 0 && console.log(`Request Body:`, req.body);
+  next();
+};
+// Implementing the Middleware
+app.use(requestLogger);
 
 // Hardcoded contacts data
 let contacts = [
