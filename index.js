@@ -34,6 +34,20 @@ app.get("/api/contacts/:id", (req, res) => {
   }
 });
 
+app.delete("/api/contacts/:id", (req, res) => {
+  const contactId = Number(req.params.id);
+  const contact = contacts.find((contact) => contact.id === contactId);
+
+  if (contact) {
+    contacts = contacts.filter((c) => c.id !== contactId);
+    res.sendStatus(204);
+    // Success response with status 204 (No Content)
+  } else {
+    res.status(404).json({ error: "Contact not found" });
+    // Response with status 404 (Not Found)
+  }
+});
+
 // Start the server
 const PORT = 3001;
 app.listen(PORT, () => {
