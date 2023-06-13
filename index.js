@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 // Hardcoded contacts data
 let contacts = [
@@ -62,7 +63,7 @@ app.post("/api/contacts", (req, res) => {
     return res.status(409).json({ error: "Email address already exists" });
   }
   // Generate unique ID for the new contact
-  const id = `${Math.random().toString(36).substr(2, 9)}${Date.now()}`;
+  const id = `${Math.random().toString(36).substring(2, 9)}${Date.now()}`;
   // Create the new contact object
   const newContact = { id, name, email };
   // Add the new contact to the contacts list
